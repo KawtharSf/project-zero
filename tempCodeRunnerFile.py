@@ -7,26 +7,23 @@ def separator():
     print(100*"-")
 separator()
 
-
 def welcome():
     print("Welcome to project Zero!")
     separator()
 
-    user_name = input("What's your name?\n")
+    name = input("What's your name?\n")
     separator()
 
-    print(f"Hello, {user_name}! Let's see if software development is for you.")
+    print(f"Hello, {name}! Let's see if software development is for you.")
     separator()
 
     goal = input("What is your goal for this project?\n")
     separator()
 
-    print(f"Name: {user_name}\nGoal: {goal}\nProject status: Active")
+    print(f"Name: {name}\nGoal: {goal}\nProject status: Active")
     separator()
-    return user_name, goal
 
-
-def ask_excitement():
+def excitement():
     print("Before we begin, let's check your excitement level for this project.")
     separator()
     while True:
@@ -57,15 +54,14 @@ def ask_excitement():
             print("Please enter a valid number.")
             separator()
             continue
-    return excited
 
 
-def ask_study_time():
+def study_time():
     print("Now, let's talk about your study time for today.")
     separator()
     while True:
         try:
-            study_time = input("How many hours do you plan to study today?\n")
+            study_time = input("\nHow many hours do you plan to study today?\n")
             separator()
             study_time = float(study_time)
             if study_time == 0:
@@ -91,14 +87,12 @@ def ask_study_time():
             print("Please enter a valid number between 0 and 24.")
             separator()
             continue
-    return study_time
 
-
-def ask_prior_experience():
+def prior_experience():
     print("Now, let's talk about your prior experience in software development.")
     separator()
     while True:
-        experience = input("Do you have any prior experience in software development? (yes/no)\n")
+        experience = input("\nDo you have any prior experience in software development? (yes/no)\n")
         separator()
         if experience.lower() == "yes":
             print("That's great! It looks like you have some background in software development.")
@@ -110,12 +104,11 @@ def ask_prior_experience():
             print("Please enter 'yes' or 'no'.")
             separator()
             continue
-    return experience
 
 if __name__ == "__main__":
-    user_name, goal = welcome()
-    excitement = ask_excitement()
-    study_time = ask_study_time()
-    prior_experience = ask_prior_experience()
+    welcome()
+    excitement()
+    study_time()
+    prior_experience()
     print("Thank you for sharing your thoughts and goals with me. Let's make this project a success!")
     separator()
