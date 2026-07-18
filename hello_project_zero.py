@@ -9,6 +9,9 @@ separator()
 
 
 def welcome():
+    study_goals = []
+
+
     print("Welcome to project Zero!")
     separator()
 
@@ -18,12 +21,22 @@ def welcome():
     print(f"Hello, {user_name}! Let's see if software development is for you.")
     separator()
 
-    goal = input("What is your goal for this project?\n")
-    separator()
+  
+    print("What are your goals for this project? \nEnter '0' when you are done.\n")
+    while True:
+        goal = input(f"Enter the goal number {len(study_goals)+1}:\n")
+        separator()
+        if goal == "0":
+            break
+        study_goals.append(goal)
 
-    print(f"Name: {user_name}\nGoal: {goal}\nProject status: Active")
+    print(f"Name: {user_name}\n")
+    print("Study Goals:")
+    for goal in study_goals:
+        print(f"{study_goals.index(goal)+1}. {goal}")
+    print("\nProject status: Active")
     separator()
-    return user_name, goal
+    return user_name, study_goals
 
 
 def ask_excitement():
@@ -113,7 +126,7 @@ def ask_prior_experience():
     return experience
 
 if __name__ == "__main__":
-    user_name, goal = welcome()
+    user_name, study_goals = welcome()
     excitement = ask_excitement()
     study_time = ask_study_time()
     prior_experience = ask_prior_experience()
