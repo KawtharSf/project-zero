@@ -1,12 +1,26 @@
 # ==================================
-# Project Zero - Day 1
+# Project Zero 
 # My goal is to discover whether software development truly fits me.
 # ==================================
 
+import json
+
+def save_user_data(user):
+    with open("user_data.json", "w") as f:
+        json.dump(user, f, indent=4)
+        
+
+def load_user_data():
+    try:
+        with open("user_data.json", "r") as f:
+            user = json.load(f)
+            return user
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+    
 
 def separator():
     print(100*"-")
-separator()
 
 
 def welcome():
@@ -24,7 +38,7 @@ def ask_study_goals(study_goals=None):
     if study_goals is None:
         study_goals = []
 
-    if len(study_goals) > 0:
+    if study_goals:
         print(f"\nYou have entered {len(study_goals)} goal(s) so far.")
         print("Your current goals are:")
         for index, goal in enumerate(study_goals):
@@ -47,7 +61,7 @@ def ask_study_goals(study_goals=None):
 def ask_excitement():
     while True:
         try:
-            excited = int(input("Rate your excitement today:\n1.Extreme\n2.High\n3.Medioum\n4.Low\n5.Not excited\n"))
+            excited = int(input("Rate your excitement today:\n1.Extreme\n2.High\n3.Medioum\n4.Low\n5.Not excited\n").strip())
 
             if excited == 1:
                 print("That's great! glad to see your excitement for this project!")
@@ -75,7 +89,7 @@ def ask_excitement():
 def ask_study_time():
     while True:
         try:
-            study_time = input("How many hours do you plan to study today?\n")
+            study_time = input("How many hours do you plan to study today?\n").strip()
             
             study_time = float(study_time)
             if study_time == 0:
@@ -104,11 +118,11 @@ def ask_study_time():
 
 def ask_prior_experience():    
     while True:
-        experience = input("Do you have any prior experience in software development? (yes/no)\n")
+        experience = input("Do you have any prior experience in software development? (yes/no)\n").strip().lower()
     
-        if experience.lower() == "yes":
+        if experience == "yes":
             print("That's great! It looks like you have some background in software development.")
-        elif experience.lower() == "no":
+        elif experience == "no":
             print("That's okay! Everyone starts somewhere. I'm here to help you learn and grow.")
         else:
             print("Please enter 'yes' or 'no'.")
@@ -135,7 +149,7 @@ def user_summary(user):
 
 def edit_user_info(user):
     while True:
-        choice = input("What would you like to edit?\n1. Name\n2. Study Goals\n3. Excitement Level\n4. Planned Study Time\n5. Prior Experience\n6. Exit edit mode\n")
+        choice = input("What would you like to edit?\n1. Name\n2. Study Goals\n3. Excitement Level\n4. Planned Study Time\n5. Prior Experience\n6. Exit edit mode\n").strip()
         if choice == "1":
             separator()
             user_name = input("Enter your new name:\n")
@@ -163,30 +177,60 @@ def edit_user_info(user):
             break
         else:
             print("Please enter a valid option.")
+        save_user_data(user)
     separator()
 
+
+def create_new_profile():
+        print("Let's create a new profile for you!")
+        separator()
+        user_name = welcome()
+        study_goals = ask_study_goals()
+        print("Before we begin, let's check your excitement level for this project\n")
+        excitement = ask_excitement()
+        study_time = ask_study_time()
+        print("Now, let's talk about your prior experience in software development\n")
+        prior_experience = ask_prior_experience()
+
+        user = {
+            "Name": user_name,
+            "Study Goals": study_goals,
+            "Excitement Level": excitement,
+            "Planned Study Time": study_time,
+            "Prior Experience": prior_experience
+        }
+        save_user_data(user)
+        return user
+
+
 if __name__ == "__main__":
-    user_name = welcome()
-    study_goals = ask_study_goals()
-    print("Before we begin, let's check your excitement level for this project\n")
-    excitement = ask_excitement()
-    study_time = ask_study_time()
-    print("Now, let's talk about your prior experience in software development\n")
-    prior_experience = ask_prior_experience()
-
-
-    user = {
-        "Name": user_name,
-        "Study Goals": study_goals,
-        "Excitement Level": excitement,
-        "Planned Study Time": study_time,
-        "Prior Experience": prior_experience
-    }
-    
-
+    user = load_user_data()
+    if user is not None:
+        while True:
+            print(f"Welcome back, {user['Name']}!")
+            separator()
+            choice = input("Would you like to:\n1. Continue\n2. Create new profile\n3. Exit\n").strip()
+            if choice == "1":
+                print("Continuing with your existing profile...")
+                separator()
+                break
+            elif choice == "2":
+                print("Creating a new profile...")
+                separator()
+                user = create_new_profile()
+                break
+            elif choice == "3":
+                print("Thank you for using Project Zero!")
+                exit()
+            else:
+                print("Please enter '1', '2', or '3'.")
+                separator()
+                continue
+    else:
+        user = create_new_profile()
     while True:
         user_summary(user)
-        edit = input("Would you like to edit your information or exit?\n1.Edit\n2.Exit\n")
+        edit = input("Would you like to edit your information or exit?\n1.Edit\n2.Exit\n").strip()
         if edit == "1":
             edit_user_info(user)
             separator()
